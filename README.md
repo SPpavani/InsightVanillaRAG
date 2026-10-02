@@ -1,9 +1,25 @@
-echo "# InsightVanillaRAG
+# InsightVanillaRAG
 
-## Overview
-InsightVanillaRAG is a Retrieval-Augmented Generation (RAG) search engine that ingests enterprise PDFs and CSVs, stores embeddings in FAISS/Pinecone/Weaviate, and delivers contextual answers using Azure OpenAI.
+A minimal baseline RAG pipeline on **Azure OpenAI** + **FAISS**, built as the reference point for later retrieval improvements.
 
-## Setup
+## How it works
+1. Documents are split with `RecursiveCharacterTextSplitter` (200 chars, 20 overlap)
+2. Chunks are embedded with Azure OpenAI embeddings and stored in FAISS
+3. `RetrievalQA` retrieves the top chunks and answers with an Azure OpenAI model
+
+## Run
+```bash
 pip install -r requirements.txt
-python src/main.py
-" > README.md
+# create a .env file with:
+# AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_DEPLOYMENT
+python main.py
+```
+
+## Status
+Baseline prototype running on 3 sample policy sentences.
+
+## Roadmap
+- [ ] Load real PDFs/CSVs from `data/`
+- [ ] Use a dedicated embedding deployment
+- [ ] Hybrid search + reranker, compared against this baseline
+- [ ] Evaluation: retrieval hit rate, faithfulness, latency
